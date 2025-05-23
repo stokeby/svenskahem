@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soffor – Svenska Hem</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fff;
+      margin: 0;
+      width: 320px;
+      height: 480px;
+      overflow: hidden;
+    }
+    .slide {
+      display: none;
+      padding: 10px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .slide.active {
+      display: block;
+    }
+    img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .price {
+      font-size: 14px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div id="slider"></div>
+  <script>
+    let index = 0, slides = [];
+    function showSlide(i) {
+      slides.forEach((el, idx) => el.classList.toggle('active', idx === i));
+    }
+    function nextSlide() {
+      index = (index + 1) % slides.length;
+      showSlide(index);
+    }
+
+    fetch('/api/listings')
+      .then(res => res.json())
+      .then(data => {
+        const slider = document.getElementById('slider');
+        slides = data.map(obj => {
+          const el = document.createElement('a');
+          el.href = obj.link;
+          el.target = "_blank";
+          el.className = "slide";
+          el.innerHTML = `
+            <img src="${obj.img}" />
+            <div class="title">${obj.title}</div>
+            <div class="price">${obj.price}</div>
+          `;
+          slider.appendChild(el);
+          return el;
+        });
+        if (slides.length) {
+          slides[0].classList.add('active');
+          setInterval(nextSlide, 5000);
+        }
+      });
+  </script>
+</body>
+</html>
