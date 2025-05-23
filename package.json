@@ -1,0 +1,15 @@
+{
+  "name": "svenskahem-widget",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "puppeteer-core": "^22.8.2",
+    "chromium": "^3.0.0"
+  }
+}
